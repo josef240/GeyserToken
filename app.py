@@ -1,12 +1,8 @@
-import os
-import re
-from pprint import pprint
-
-import requests
-from fastapi import FastAPI
-from jwt import JWT
 from requests_oauthlib import OAuth2Session
+from jwt import JWT
 import webbrowser
+import re
+import os
 
 def get_token():
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
@@ -14,7 +10,7 @@ def get_token():
     # Open a web-browser for OAuth Login to Microsoft Online
     oauth = OAuth2Session(
         client_id="b36b1432-1a1c-4c82-9b76-24de1cab42f2",
-        redirect_uri="urn:ietf:wg:oauth:2.0:oob",
+        redirect_uri="https://login.microsoftonline.com/common/oauth2/nativeclient",
     )
 
     authorization_url, state = oauth.authorization_url(
@@ -31,7 +27,7 @@ def get_token():
     print("\n\n")
 
     while True:
-        authorization_response = re.search("urn[^ ]+", input('Enter the full url (or text):  ')).group(0)
+        authorization_response = re.search("https://login.microsoftonline.com/common/oauth2/nativeclient[^ ]+", input('Enter the full url (or text):  ')).group(0)
 
         if ".." in authorization_response:
             print("You have provided a shortened response. Try right clicking the message box and choosing 'copy full text' ")
